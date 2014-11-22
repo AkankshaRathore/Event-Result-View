@@ -1,6 +1,5 @@
 <!-- Including files for DB connection and Session Control -->
 <?php
-    //require 'includes/login/core.inc.php';
    require 'connect.php';
 ?>
 <!-- /End of includes -->
@@ -37,7 +36,11 @@
     
     <style>
     th{
-
+        text-align:center;
+        font-size:22px;
+    }
+    h1{
+        text-align:center;
     }
     </style>
 
@@ -48,15 +51,20 @@
 
     
         <div class="row" style="margin:-4% 3% 3% 0">
-            <div class="col-md-6 col-sm-12">
-                <h1>xpression2014</h1>
+            <div class="col-md-12 col-sm-12">
+                <h1>ScoreBoard xpression-14</h1>
                 <table class="table table-bordered">
     <thead>
         <tr>
-            <th></th>
-            <?php
-$sql = "SELECT * from team_master";
-$result = $con->query($sql);
+            <th rowspan="2">Events Name</th>
+            <th colspan="14">Team Name</th>
+        </tr>
+        <tr>
+            
+<!--fetch team names from team_master-->
+<?php
+$team_name = "SELECT * from team_master";
+$result = $con->query($team_name);
 
 if ($result->num_rows > 0) {
     // output data of each row
@@ -73,7 +81,20 @@ if ($result->num_rows > 0) {
     </thead>
     <tbody>
         <tr>
-            <td>Shubh Arambh</td>
+  <?php
+$event_name = "SELECT * from event_master WHERE event_id < 24";
+$events = $con->query($event_name);
+
+if ($events->num_rows > 0) {
+    // output data of each row
+    while($row = $events->fetch_assoc()) {
+        echo  "<td>".$row['ename']."</td>\n";
+    }
+} else {
+    echo "0 results";
+}
+?>
+            <!--<td>Shubh Arambh</td>-->
         <?php
     for($i=0;$i<15;$i+=1){
                 $sql_query = "Select marks from score where eventid = 1 && tid = ".$i."";
@@ -86,6 +107,7 @@ if ($result->num_rows > 0) {
     ?>    
         </tr>
     </tbody>
+    <tr>Total</tr>
 </table>
             </div>
         </div>
