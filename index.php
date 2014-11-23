@@ -11,6 +11,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="refresh" content="5">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -35,42 +36,28 @@
 <body>
     
     <style>
-    th{
-        text-align:center;
-        font-size:22px;
-    }
-    h1{
-        text-align:center;
+    th,td{
+		font-size:11.5px;
     }
     </style>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
-        
-    </nav>
-
-    
-        <div class="row" style="margin:-4% 3% 3% 0">
-            <div class="col-md-12 col-sm-12">
-                <h1>ScoreBoard xpression-14</h1>
+      <div class="row" style="margin:-5% 3% 1.8% 0">
+            <div class="col-md-6 col-sm-12">
+                <h3>xpression2014</h3>
                 <table class="table table-bordered">
     <thead>
         <tr>
-            <th rowspan="2">Events Name</th>
-            <th colspan="14">Team Name</th>
-        </tr>
-        <tr>
-            
-<!--fetch team names from team_master-->
-<?php
-$team_name = "SELECT * from team_master";
-$result = $con->query($team_name);
+            <th></th>
+            <?php
+$sql = "SELECT * from event_master where event_id<23";
+$result = $con->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo  "<th>".$row['tname']."</th>";
+        echo  "<th>".$row['ename']."</th>";
     }
+	echo '<th>Total</th>';
 } else {
     echo "0 results";
 }
@@ -80,34 +67,29 @@ if ($result->num_rows > 0) {
         </tr>
     </thead>
     <tbody>
-        <tr>
-  <?php
-$event_name = "SELECT * from event_master WHERE event_id < 24";
-$events = $con->query($event_name);
-
-if ($events->num_rows > 0) {
-    // output data of each row
-    while($row = $events->fetch_assoc()) {
-        echo  "<td>".$row['ename']."</td>\n";
-    }
-} else {
-    echo "0 results";
-}
-?>
-            <!--<td>Shubh Arambh</td>-->
-        <?php
-    for($i=0;$i<15;$i+=1){
-                $sql_query = "Select marks from score where eventid = 1 && tid = ".$i."";
+        
+            <?php
+    for($i=0;$i<15;$i+=1){echo '<tr>';
+                $sql_query = "Select * from team_master where tid = ".$i."";
+                $result =  mysqli_query($con,$sql_query);
+                 while($row = mysqli_fetch_array($result)) { 
+				     $team_name = $row['tname'];
+					 $tid = $row['tid'];
+					 echo "<th>".$team_name."</th>";
+					 $total = 0;
+					 for($j=1;$j<23;$j+=1){
+                $sql_query = "Select marks from score where eventid = ".$j." && tid = ".$tid."";
                 $result =  mysqli_query($con,$sql_query);
                  while($row = mysqli_fetch_array($result)) {
-        echo  "<td>".$row['marks']."hii</td>";
+        echo  "<td>".$row['marks']."</td>";
+		$total += $row['marks'];
     }
-
-            }
-    ?>    
-        </tr>
+	
+            }echo '<td>'.$total.'</td>';
+				 }
+	echo '</tr>';}?>    
+        
     </tbody>
-    <tr>Total</tr>
 </table>
             </div>
         </div>
