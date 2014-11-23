@@ -37,8 +37,10 @@
     
     <style>
     th,td{
-		font-size:11.5px;
+		font-size:13px;
     }
+	body{
+		color:#FFF}
     </style>
 
       <div class="row" style="margin:-5% 3% 1.8% 0">
